@@ -1,0 +1,52 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    background-color: black;
+}
+
+#root {
+    padding: 3rem;
+    text-align: center;
+}
+
+#root canvas {
+    display: block;
+    margin: 0 auto;
+}
+
+h1 {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 span:nth-child(1) {
+    color: red
+}
+
+h1 span:nth-child(2) {
+    color: orange
+}
+
+h1 span:nth-child(3) {
+    color: yellow
+}
+
+h1 span:nth-child(4) {
+    color: green
+}
+
+h1 span:nth-child(5) {
+    color: cyan
+}
+
+h1 span:nth-child(6) {
+    color: purple
+}
