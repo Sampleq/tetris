@@ -9,7 +9,7 @@ export class Game {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -57,7 +57,7 @@ export class Game {
     movePieceLeft() {
         this.activePiece.x--;
 
-        if (this.isPieceOutOfBounds()) {
+        if (this.hasCollision()) {
             this.activePiece.x++;
         }
     }
@@ -65,7 +65,7 @@ export class Game {
     movePieceRight() {
         this.activePiece.x++;
 
-        if (this.isPieceOutOfBounds()) {
+        if (this.hasCollision()) {
             this.activePiece.x--;
         }
     }
@@ -73,28 +73,30 @@ export class Game {
     movePieceDown() {
         this.activePiece.y++;
 
-        if (this.isPieceOutOfBounds() || this.isCollided()) {
+        if (this.hasCollision()) {
             this.activePiece.y--;
             this.lockPiece();
         }
     }
 
-    // метод для проверки на выход за пределы поля
-    isPieceOutOfBounds() {
+    // метод для проверки на столкновения  или выход за пределы поля
+    hasCollision() {
         const playfield = this.playfield;
         const { x: pieceX, y: pieceY, blocks } = this.activePiece;
         // pieceX, pieceY - координаты массива с фигурой внутри поля playfield
         // x, y внутри цикла - локальные индексы внутри двумерного массива с фигурой activePiece
 
         // получаем доступ к ряду и колонке в котором находится activePiece (с учётом размеров текущей активной фигуры - для простоты проверяем каждый элемент фигуры) и проверяем что такие значения существуют (т.е. что мы не вышли за пределы поля)
-        for (let y = 0; y < blocks.length; y++) {
+        for (let y = 0; y < blocks.length; y++) { // отрефакторить на Array.some()
             for (let x = 0; x < blocks[y].length; x++) {
 
                 // проверяем что "ячейка" массива activePiece не пустая а затем  проверяем значение поля при сложении координат положения фигуры  activePiece и её внутренних координат её блока. Приоритет оператора && больше, чем у || - поэтому нужны скобки
                 if (blocks[y][x] !== 0 &&
-                    (playfield[pieceY + y] === undefined ||
-                        playfield[pieceY + y][pieceX + x] === undefined)
+                    ((playfield[pieceY + y] === undefined ||
+                        playfield[pieceY + y][pieceX + x] === undefined) ||
+                        playfield[pieceY + y][pieceX + x] !== 0) // упросить до проверки только точки (используя .?)
                 ) {
+                    console.log('PieceOutOfBounds');
                     return true;
                 }
 
@@ -109,7 +111,7 @@ export class Game {
         const { x: pieceX, y: pieceY, blocks } = this.activePiece;
         // pieceX, pieceY - координаты массива с фигурой внутри поля playfield
         // x, y внутри цикла - локальные индексы внутри двумерного массива с фигурой activePiece
-        for (let y = 0; y < blocks.length; y++) {
+        for (let y = 0; y < blocks.length; y++) { // отрефакторить на Array.some()
             for (let x = 0; x < blocks[y].length; x++) {
                 // копируем значение из blocks в playfield  на соответствующее место, при этом проверяя что значение в blocks не равно нулю - чтобы можно было зафиксировать фигуру, которая повёрныта внутри своего блока так что не заниммает все столбцы или колонки своего блока - т.е. нули копироваться не будут
                 // console.log(blocks[y][x]);
@@ -125,32 +127,6 @@ export class Game {
 
         console.log('lockPiece()');
         // метод lockPiece() не очищает поле от предыдущей позции фигуры activePiece после повторного применения - но это не важно, т.к. он  не будет вызываться при каждом движении, а будет вызываться только когда фигура дойдёт до конца поля или столкнётся с другой фигурой, а также перед представлением - отрисовкой игрового поля для пользователя.
-    }
-
-    isCollided() {
-        const playfield = this.playfield;
-        const { x: pieceX, y: pieceY, blocks } = this.activePiece;
-
-        for (let y = 0; y < blocks.length; y++) {
-            for (let x = 0; x < blocks[y].length; x++) {
-
-                if (blocks[y][x] !== 0 &&
-                    (playfield[pieceY + y] !== undefined && // эту строку можно убрать
-                        playfield[pieceY + y][pieceX + x] !== 0)
-                ) {
-                    console.log(y);
-                    console.log(x);
-                    console.log(blocks[y][x]);
-                    console.log(playfield[pieceY + y]);
-                    console.log(playfield[pieceY + y][pieceX + x]);
-                    console.log('isCollided()');
-                    return true;
-                }
-
-            }
-        }
-
-        return false;
     }
 
     constructor() {
