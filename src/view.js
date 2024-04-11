@@ -1,4 +1,14 @@
 export class View {
+    // static colors = [null, 'red', 'yellow', 'yellowgreen', 'green', 'orange', 'cyan', 'purple'];
+    static colors = {   // для большей наглядности соответствия цифhы цвету используем объект
+        1: 'cyan',
+        2: 'blue',
+        3: 'orange',
+        4: 'yellow',
+        5: 'green',
+        6: 'purple',
+        7: 'red',
+    }
 
     /**
      * 
@@ -32,7 +42,8 @@ export class View {
     // Логика метода: перебираем массив и на каждый непустой элемент что-то отрисовываем
     renderPlayField(currentState) {
 
-        const { playfield } = currentState
+        const { playfield } = currentState;
+
 
         for (let y = 0; y < playfield.length; y++) {
             const line = playfield[y];
@@ -40,13 +51,17 @@ export class View {
             for (let x = 0; x < line.length; x++) {
                 const block = line[x];
 
+                // const indexColor = (Math.floor(Math.random() * 7) + block) % 7;
+
+
                 // для непустых ячеек отрисовываем блок, пустые - очищаем
                 this.renderBlock(block,
                     x * this.blockWidth,
                     y * this.blockHeight,
                     this.blockWidth,
                     this.blockHeight,
-                    'red',
+                    View.colors[block], // фиксированный цвет
+                    // 'red',
                 )
 
             }
