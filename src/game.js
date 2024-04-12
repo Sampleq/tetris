@@ -11,7 +11,7 @@ export class Game {
     }
 
     score = 0;
-    lines = 19;
+    lines = 0;
     get level() {
         return Math.floor(this.lines / 10)
     }
@@ -75,8 +75,8 @@ export class Game {
         const playfield = this.createPlayField();
 
         // можно заменить методами массивов
-        for (let y = 0; y < playfield.length; y++) {  // временно указываем 20, а не берём из переменной
-            for (let x = 0; x < playfield[y].length; x++) { // временно указываем 10, а не берём из переменной
+        for (let y = 0; y < playfield.length; y++) {
+            for (let x = 0; x < playfield[y].length; x++) {
 
                 playfield[y][x] = this.playfield[y][x];
 
@@ -96,7 +96,11 @@ export class Game {
         }
 
         return {
-            playfield, // сокращённая запись свойства playfield: playfield
+            score: this.score,
+            level: this.level,
+            lines: this.lines,
+            nextPiece: this.nextPiece,
+            playfield,
         }
 
     }
@@ -348,7 +352,7 @@ export class Game {
         const rows = 20; // отрефакторить - убрать магические числа
         const columns = 10;
 
-        let lines = [];
+        const lines = [];
 
         for (let y = rows - 1; y >= 0; y--) { // перебираем ряды с последнего
             let numberOfBlocks = 0; // начальное число заполненных блоков в ряду

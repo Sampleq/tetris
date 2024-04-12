@@ -10,17 +10,30 @@ html {
 
 body {
     background-color: black;
+    transform: scale(0.875);
+    overflow: hidden;
+}
+
+@media (min-width: 1440px) {
+    body {
+        transform: scale(1);
+    }
+
+    #root {
+        padding: 2rem 3rem;
+        text-align: center;
+    }
 }
 
 #root {
-    padding: 2rem 3rem;
+    padding: 0rem 3rem;
     text-align: center;
 }
 
 #root canvas {
     display: block;
     margin: 0 auto;
-    border: 0.2rem solid whitesmoke;
+    /* background-color: whitesmoke; */
 }
 
 h1 {

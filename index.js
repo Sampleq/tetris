@@ -8,8 +8,8 @@ const root = document.querySelector('#root');
 const game = new Game();
 
 // // размеры и параметры игрового поля
-const width = 280 // 480
-const height = 560 // 640
+const width = 480 // 480  420
+const height = 640 // 640  560
 const rows = 20
 const columns = 10
 
@@ -62,17 +62,17 @@ document.addEventListener('keydown', (event) => {
             break;
     }
 
-    view.renderPlayField(game.getState());
+    view.render(game.getState());
 
 })
 
 
 // setInterval(() => {
 //     game.movePieceDown();
-//     view.renderPlayField(game.getState());
+//     view.render(game.getState());
 // }, 1000);
 
-
+// view.renderEndScreen(game.getState());
 
 // для возможности видеть выводить значения свойств в консоль (т.к. модуль - это отдельная область видимости)
 window.game = game;
