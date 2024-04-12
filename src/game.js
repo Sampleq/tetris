@@ -1,5 +1,6 @@
 // rotation - rotatePiece() - calculated, using temporary array
 
+// import { Controller } from "./controller.js";
 import { colorsNumber } from "./view.js"; // число цветов для рандомной перекраски
 
 export class Game {
@@ -12,8 +13,10 @@ export class Game {
 
     score = 0;
     lines = 0;
+    // lines = 109;
+    topOut = false; // topOut - термин из оф. документации Тетриса - это Game Over
     get level() {
-        return Math.floor(this.lines / 10)
+        return Math.floor(this.lines / 10);
     }
 
     // // !! -remade with new Array(20), fill() etc. 
@@ -101,6 +104,7 @@ export class Game {
             lines: this.lines,
             nextPiece: this.nextPiece,
             playfield,
+            isGameOver: this.topOut,
         }
 
     }
@@ -252,6 +256,10 @@ export class Game {
     }
 
     movePieceDown() {
+        if (this.topOut) {
+            return;
+        }
+
         this.activePiece.y++;
 
         if (this.hasCollision()) {
@@ -266,7 +274,12 @@ export class Game {
 
             // обновляем значения свойств activePiece и nextPiece
             this.updatePieces();
+        }
 
+        // после создания новых фигур ещё раз проверяем, нет ли столкновения - т.е. есть ли место куда падать или уже нет - т.е. игра окончена.
+        if (this.hasCollision()) {
+            this.topOut = true;
+            console.log('topOut');
         }
     }
 

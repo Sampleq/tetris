@@ -98,6 +98,8 @@ export class View {
         this.context.textBaseline = 'middle';
         this.context.fillText('GAME OVER', this.width / 2, this.height / 2 - 50);
         this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
+        this.context.fillText('Press SPACE or ESC to retry', this.width / 2, this.height / 2 + 100);
+
     }
 
     //  метод который будет рисовать игровое поле. В качестве аргумента принимает двухмерный массив (playfield), на основе которого будет строить представление (т.е. наше игровое поле).
