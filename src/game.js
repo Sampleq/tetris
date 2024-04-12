@@ -3,9 +3,18 @@
 import { colorsNumber } from "./view.js"; // число цветов для рандомной перекраски
 
 export class Game {
+    static points = {
+        1: 100,
+        2: 300,
+        3: 600,
+        4: 1000,
+    }
+
     score = 0;
-    lines = 0;
-    level = 0;
+    lines = 19;
+    get level() {
+        return Math.floor(this.lines / 10)
+    }
 
     // // !! -remade with new Array(20), fill() etc. 
     // объект игрового поля - двухмерный массив
@@ -245,8 +254,15 @@ export class Game {
             this.activePiece.y--;
             this.lockPiece();
 
+            // после того как зафиксировали фигуру проверяем на возможность очистки линий и взависимости от кол-ва линий - обновляем счёт
+            // this.updateScore(this.clearLines());
+
+            const clearLines = this.clearLines();
+            this.updateScore(clearLines);
+
             // обновляем значения свойств activePiece и nextPiece
             this.updatePieces();
+
         }
     }
 
@@ -326,6 +342,61 @@ export class Game {
 
         console.log('lock Piece');
         // метод lockPiece() не очищает поле от предыдущей позции фигуры activePiece после повторного применения - но это не важно, т.к. он  не будет вызываться при каждом движении, а будет вызываться только когда фигура дойдёт до конца поля или столкнётся с другой фигурой (, а также перед представлением - отрисовкой игрового поля для пользователя. - ??)
+    }
+
+    clearLines() {
+        const rows = 20; // отрефакторить - убрать магические числа
+        const columns = 10;
+
+        let lines = [];
+
+        for (let y = rows - 1; y >= 0; y--) { // перебираем ряды с последнего
+            let numberOfBlocks = 0; // начальное число заполненных блоков в ряду
+
+            for (let x = 0; x < columns; x++) {
+                if (this.playfield[y][x] !== 0) {
+                    numberOfBlocks++;
+                }
+            }
+
+            // если ряд пустой - прерываем цикл - т.к. над пустым рядом точно не может быть заволненных рядов или блоков
+            if (numberOfBlocks === 0) {
+                break
+            } else if (numberOfBlocks < columns) {
+                continue; // если ряд заполнен неполностью - переходим слудующей итерации цикла - т.е. перебору следующего, вышестоящего ряда 
+            } else if (numberOfBlocks === columns) {
+                // отмечаем ряд если он полностью заполненный - но сразу его не удаляем, т.к. тогда сместятся остальные ряды, а мы ещё не прошлись по ним циклом. Отмеченный как полностью заполненные ряды удаляем в конце.
+                // Добавляем индекс полностью заполненного ряда в начало массива lines - чтоб  потом поочереди сверху вниз убирать заполненные ряды
+                lines.unshift(y);
+
+
+            }
+        }
+
+        // перебираем массив с индексами полностью заполненных линий (сохранены в обратном порядке 0-й - самая верхняя линия) и удаляем из игрового поля линию (ряд) с соответствующим индексом, а сверху - т.е. в начало игрового поля - б=добавляем пустую линию (из нулей)
+        for (const index of lines) {
+            // добавить эффект заполненной линии перед удалением - например перемигивание разными цветами
+
+            this.playfield.splice(index, 1);
+            this.playfield.unshift((new Array(columns)).fill(0));
+        }
+
+        return lines.length;
+
+    }
+
+
+    // обновление очков - счёта
+    updateScore(clearedLines) {
+        if (clearedLines > 0) {
+            // !! Добавить увеличенное кол-во очков за удаление линии с фигурой nugget - разноцветной
+            this.score += Math.round(Game.points[clearedLines] * (1 + this.level / 10)); // Math.round - из-за работы с дробными значениями
+
+            this.lines += clearedLines; // увеличиваем счётс=чик линий
+            // this.level = Math.floor(this.lines / 10); вынес в класс как свойство-геттер
+
+            // console.log(this.score, this.lines, this.level)
+        }
     }
 
 
