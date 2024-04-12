@@ -92,3 +92,5 @@ export class View {
 
 
 }
+
+export const colorsNumber = Object.keys(View.colors).length;

@@ -29,14 +29,13 @@ document.addEventListener('keydown', (event) => {
         case 'KeyL': // L
         case 'KeyA': // A
             game.movePieceLeft();
-            view.renderPlayField(game.getState());
+            // view.renderPlayField(game.getState()); // вызываем после движения
             break;
 
         case 'ArrowRight': // RightArrow
         case 'KeyD': // D
         case 'Quote': // Quote '
             game.movePieceRight();
-            view.renderPlayField(game.getState());
             break;
 
 
@@ -44,7 +43,6 @@ document.addEventListener('keydown', (event) => {
         case 'KeyS': //  S
         case 'Semicolon': // Semicolon ;
             game.movePieceDown();
-            view.renderPlayField(game.getState());
             break;
 
 
@@ -53,7 +51,6 @@ document.addEventListener('keydown', (event) => {
         case 'ArrowUp': // ArrowUp
         case 'KeyW': // W
             game.rotatePiece();
-            view.renderPlayField(game.getState());
             break;
 
         // case '': //  
@@ -64,9 +61,16 @@ document.addEventListener('keydown', (event) => {
         default:
             break;
     }
+
+    view.renderPlayField(game.getState());
+
 })
 
 
+// setInterval(() => {
+//     game.movePieceDown();
+//     view.renderPlayField(game.getState());
+// }, 1000);
 
 
 

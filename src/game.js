@@ -1,5 +1,7 @@
 // rotation - rotatePiece() - calculated, using temporary array
 
+import { colorsNumber } from "./view.js"; // число цветов для рандомной перекраски
+
 export class Game {
     score = 0;
     lines = 0;
@@ -106,10 +108,12 @@ export class Game {
     }
 
     createPiece() {
-        // получаем случайное число от 0 до 6 - т.к. в тетрисе 7 фигур 
-        const index = Math.floor(Math.random() * 7); // - с одинаковой вероятностью
+        const pieces = 'IJLOSTZ'; // задаём типы фигур
 
-        const type = 'IJLOSTZ'[index]  // Получаем случайную фигуру. Каждый элемент строки - это название фигуры (её внешний вид)
+        // получаем случайное число от 0 до 6 - т.к. в тетрисе 7 фигур 
+        const index = Math.floor(Math.random() * pieces.length); // - с одинаковой вероятностью
+
+        const type = pieces[index]  // Получаем случайную фигуру. Каждый элемент строки - это название фигуры (её внешний вид)
 
         const piece = {};
 
@@ -186,8 +190,35 @@ export class Game {
         piece.x = Math.floor((10 - piece.blocks[0].length) / 2);
         piece.y = -1; //  у всех фигур верхний ряд в bounding box - пустой
 
+        // // раскрашиваем фигуры в случайный цвет. 1/20 - вероятность разноцветной фигуры
+        if (Math.floor(Math.random() * 21)) {
+            piece.blocks =
+                this.repaintPiece(piece.blocks, colorsNumber, Math.ceil(Math.random() * colorsNumber));
+        } else {
+            piece.blocks = this.repaintPiece(piece.blocks, colorsNumber);
+        }
+
+
         return piece;
     }
+
+    repaintPiece(block_2d, colorsNumber = 7, colorIndex) {
+        return block_2d = block_2d.reduce((pieceBlock, rowPiece) => {
+            rowPiece = rowPiece.map(el => {
+                if (el) {
+                    return (colorIndex)
+                        ? colorIndex
+                        : Math.ceil(Math.random() * colorsNumber);
+                } else {
+                    return el;
+                }
+            });
+
+            pieceBlock.push(rowPiece);
+            return pieceBlock;
+        }, []);
+    }
+
 
 
     // // методы перемещения активной фигуры
