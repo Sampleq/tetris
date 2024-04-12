@@ -62,8 +62,8 @@ export class View {
 
     }
 
-    // общий метод, вызываемый для рендеринга всего
-    render(currentState) {
+
+    renderMainScreen(currentState) {
         this.renderPlayField(currentState);
         this.renderPanel(currentState);
     }
@@ -73,7 +73,7 @@ export class View {
         this.context.font = '3.0rem "Arial"';
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
-        this.context.fillText('Press SPACE to start', this.width / 2, this.height / 2);
+        this.context.fillText('Press SPACE or ESC to start', this.width / 2, this.height / 2);
     }
 
     renderPauseScreen() {
@@ -84,7 +84,7 @@ export class View {
         this.context.font = '3.0rem "Arial"';
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
-        this.context.fillText('Press SPACE to resume', this.width / 2, this.height / 2);
+        this.context.fillText('Press SPACE or ESC to resume', this.width / 2, this.height / 2);
     }
 
     renderEndScreen(currentState) {
@@ -153,9 +153,9 @@ export class View {
         this.context.clearRect(this.panelX, this.panelY, this.panelWidth, this.panelHeight)
 
         // теперь выводим информацию в боковую панель
-        this.context.fillText(`Score: ${score}`, this.panelX + 0, this.panelY + 0); // выводим текст в canvas (на холст)
-        this.context.fillText(`Lines: ${lines}`, this.panelX + 0, this.panelY + 25); // выводим текст в canvas (на холст)
-        this.context.fillText(`Level: ${level}`, this.panelX + 0, this.panelY + 50); // выводим текст в canvas (на холст)
+        this.context.fillText(`Score:  ${score}`, this.panelX + 0, this.panelY + 0); // выводим текст в canvas (на холст)
+        this.context.fillText(`Lines:   ${lines}`, this.panelX + 0, this.panelY + 25); // выводим текст в canvas (на холст)
+        this.context.fillText(`Level:   ${level}`, this.panelX + 0, this.panelY + 50); // выводим текст в canvas (на холст)
         this.context.fillText(`Next:`, this.panelX + 0, this.panelY + 100); // 
 
 
