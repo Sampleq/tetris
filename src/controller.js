@@ -13,6 +13,8 @@ export class Controller {
         this.btnDown = this.btns.querySelector('.btn_down');
         this.btnRotate = this.btns.querySelector('.btn_rotate');
         this.btnPause = this.btns.querySelector('.btn_pause');
+        this.intervalBtn = null;
+        this.timeoutBtn = null;
 
 
         this.intervalId = null;
@@ -33,8 +35,15 @@ export class Controller {
 
         //  листнеры для виртуальных кнопок
         this.btns.addEventListener('click', (event) => this.handleBtns(event));
+
         this.btns.addEventListener('touchstart', (event) => this.hoverBtns(event));
         this.btns.addEventListener('touchend', (event) => this.unhoverBtns(event));
+
+        this.btns.addEventListener('touchstart', (event) => this.holdBtns(event));
+        this.btns.addEventListener('touchend', (event) => this.releaseBtns(event));
+
+        this.btns.addEventListener('mousedown', (event) => this.holdBtns(event));
+        this.btns.addEventListener('mouseup', (event) => this.releaseBtns(event));
 
 
         this.view.renderStartScreen();
@@ -51,14 +60,17 @@ export class Controller {
         if (currentState.isGameOver) {
             console.log('currentState.isGameOver', currentState.isGameOver);
 
-            // this.stopTimer();
-            // this.isPaused = true;
+            // GameOver - по сути ставит игру на паузу и вешает флаг isGameOver после которого игра сбрасывается при перезапуске
             this.pause();
             this.view.renderEndScreen(currentState)
         }
     }
 
     pause() {
+        // обязательно очищаем  интервалы эмулирующие зажатие нарисованых кнопок
+        clearTimeout(this.timeoutBtn);
+        clearInterval(this.intervalBtn);
+
         this.isPaused = true;
         this.view.renderPauseScreen();
         this.stopTimer();
@@ -157,6 +169,7 @@ export class Controller {
     }
 
     handleBtns(event) {
+        // // only for touch screens
         // if (matchMedia('(pointer:coarse)').matches) {
         //     return
         // }
@@ -180,12 +193,32 @@ export class Controller {
                 break;
         }
 
+    }
+
+    holdBtns(event) {
+
+        // unify the touch and click event in one common event:
+        event = (event.changedTouches) ? event.changedTouches[0] : event
+
+        const timeoutBtnDelay = 500;
+        const intervalBtnDelay = 100;
+
+
         switch (this.isPaused || this.game.isGameOver || event.target) { //  || вместо if-ов
 
             case this.btnLeft:
 
                 this.game.movePieceLeft();
                 this.view.renderMainScreen(this.game.getState()); // вызываем после движения
+
+                this.timeoutBtn = setTimeout(() => {
+                    this.intervalBtn = setInterval(() => {
+                        this.game.movePieceLeft();
+                        this.view.renderMainScreen(this.game.getState());
+                    }, intervalBtnDelay);
+                }, timeoutBtnDelay);
+
+
                 break;
 
             case this.btnRight:
@@ -193,19 +226,56 @@ export class Controller {
                 this.game.movePieceRight();
                 this.view.renderMainScreen(this.game.getState());
 
+                this.timeoutBtn = setTimeout(() => {
+                    this.intervalBtn = setInterval(() => {
+                        this.game.movePieceRight();
+                        this.view.renderMainScreen(this.game.getState());
+                    }, intervalBtnDelay);
+                }, timeoutBtnDelay);
+
+
                 break;
 
             case this.btnDown:
-                // this.stopTimer();  //  для использования с handleKeyUp(event)
+
                 this.game.movePieceDown();
                 this.view.renderMainScreen(this.game.getState());
+
+                this.timeoutBtn = setTimeout(() => {
+                    this.intervalBtn = setInterval(() => {
+                        this.game.movePieceDown();
+                        this.view.renderMainScreen(this.game.getState());
+                    }, intervalBtnDelay);
+                }, timeoutBtnDelay);
 
                 break;
 
             case this.btnRotate:
+
                 this.game.rotatePiece();
                 this.view.renderMainScreen(this.game.getState());
 
+                this.timeoutBtn = setTimeout(() => {
+                    this.intervalBtn = setInterval(() => {
+                        this.game.rotatePiece();
+                        this.view.renderMainScreen(this.game.getState());
+                    }, intervalBtnDelay);
+                }, timeoutBtnDelay);
+
+                break;
+        }
+    }
+
+    releaseBtns(event) {
+        switch (this.isPaused || this.game.isGameOver || event.target) { //  || вместо if-ов
+
+            case this.btnLeft:
+            case this.btnRight:
+            case this.btnDown:
+            case this.btnRotate:
+
+                clearTimeout(this.timeoutBtn);
+                clearInterval(this.intervalBtn);
                 break;
         }
     }
@@ -217,7 +287,6 @@ export class Controller {
     unhoverBtns(event) {
         event.changedTouches[0].target.classList.remove('btn_hover');
     }
-
 
 
     // handleKeyUp(event) {

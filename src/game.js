@@ -129,7 +129,7 @@ export class Game {
     }
 
     createPiece() {
-        const pieces = 'IJLOSTZ'; // задаём типы фигур
+        const pieces = 'IJLOSTZ.IJLOSTZIJLOSTZ'; // задаём типы фигур
 
         // получаем случайное число от 0 до 6 - т.к. в тетрисе 7 фигур 
         const index = Math.floor(Math.random() * pieces.length); // - с одинаковой вероятностью
@@ -197,6 +197,14 @@ export class Game {
                     [0, 0, 0],
                     [7, 7, 0],
                     [0, 7, 7],
+                ];
+                break;
+
+            case '.':
+                piece.blocks = [
+                    [0, 0, 0],
+                    [0, 1, 0],
+                    [0, 0, 0],
                 ];
                 break;
 

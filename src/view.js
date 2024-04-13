@@ -77,7 +77,7 @@ export class View {
     }
 
     renderPauseScreen() {
-        this.context.fillStyle = 'rgba(0,0,0,0.75)';
+        this.context.fillStyle = 'rgba(0,0,0,0.25)';
         this.context.fillRect(0, 0, this.width, this.height);
 
         this.context.fillStyle = 'whitesmoke';
