@@ -6,12 +6,27 @@
 
 html {
     font-size: 10px;
+
+    /* Disable silecting of anything */
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    -moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body {
     background-color: black;
     /* overflow: hidden; */
     /* height: 100vh; */
+
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .wrapper {
