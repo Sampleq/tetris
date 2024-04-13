@@ -42,8 +42,17 @@ export class Controller {
         this.btns.addEventListener('touchstart', (event) => this.holdBtns(event));
         this.btns.addEventListener('touchend', (event) => this.releaseBtns(event));
 
-        this.btns.addEventListener('mousedown', (event) => this.holdBtns(event));
-        this.btns.addEventListener('mouseup', (event) => this.releaseBtns(event));
+
+        // only for Mouse devices. NOT touchscreens
+        if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            this.btns.addEventListener('mousedown', (event) => this.holdBtns(event));
+            this.btns.addEventListener('mouseup', (event) => this.releaseBtns(event));
+
+            console.log(true, `matchMedia('(hover: hover) and (pointer: fine)').matches`)
+        } else {
+            console.log(false, `matchMedia('(hover: hover) and (pointer: fine)').matches`)
+        }
+
 
 
         this.view.renderStartScreen();
@@ -197,7 +206,7 @@ export class Controller {
 
     holdBtns(event) {
 
-        // unify the touch and click event in one common event:
+        // unify the touch and click event in one common event:  - ивенты тача и mousedown   нельзя просто объединять - глючит на iOS !!! - надо отключать листнеры mousedown  для тачскринов
         event = (event.changedTouches) ? event.changedTouches[0] : event
 
         const timeoutBtnDelay = 500;
@@ -259,7 +268,7 @@ export class Controller {
                     this.intervalBtn = setInterval(() => {
                         this.game.rotatePiece();
                         this.view.renderMainScreen(this.game.getState());
-                    }, intervalBtnDelay);
+                    }, intervalBtnDelay * 2);
                 }, timeoutBtnDelay);
 
                 break;
