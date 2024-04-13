@@ -31,8 +31,11 @@ export class Controller {
         // //   при зажатой клавише вниз таймер сдвига вниз всё равно срабатывает - получаем лишний(??) сдвиг вниз -  разве это баг? . чисто попробовать как играется с отключением таймера
         // document.addEventListener('keyup', (event) => this.handleKeyUp(event));
 
-        //  листнер для виртуальных кнопок
+        //  листнеры для виртуальных кнопок
         this.btns.addEventListener('click', (event) => this.handleBtns(event));
+        this.btns.addEventListener('touchstart', (event) => this.hoverBtns(event));
+        this.btns.addEventListener('touchend', (event) => this.unhoverBtns(event));
+
 
         this.view.renderStartScreen();
 
@@ -154,6 +157,10 @@ export class Controller {
     }
 
     handleBtns(event) {
+        // if (matchMedia('(pointer:coarse)').matches) {
+        //     return
+        // }
+
         console.log(event.target);
         switch (event.target) {
 
@@ -202,6 +209,16 @@ export class Controller {
                 break;
         }
     }
+
+    // btns mobile hover effect
+    hoverBtns(event) {
+        event.changedTouches[0].target.classList.add('btn_hover');
+    }
+    unhoverBtns(event) {
+        event.changedTouches[0].target.classList.remove('btn_hover');
+    }
+
+
 
     // handleKeyUp(event) {
     //     switch (this.isPaused || this.game.topOut || event.code) {
