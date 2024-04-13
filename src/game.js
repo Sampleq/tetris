@@ -14,9 +14,13 @@ export class Game {
     score = 0;
     lines = 0;
     // lines = 109;
-    topOut = false; // topOut - термин из оф. документации Тетриса - это Game Over
     get level() {
         return Math.floor(this.lines / 10);
+    }
+
+    topOut = false; // topOut - термин из оф. документации Тетриса - это Game Over
+    get isGameOver() {
+        return this.topOut;
     }
 
     // // !! -remade with new Array(20), fill() etc. 

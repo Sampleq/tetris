@@ -73,7 +73,7 @@ export class View {
         this.context.font = '3.0rem "Arial"';
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
-        this.context.fillText('Press SPACE or ESC to start', this.width / 2, this.height / 2);
+        this.context.fillText('Press SPACE or ESC to Start', this.width / 2, this.height / 2);
     }
 
     renderPauseScreen() {
@@ -84,7 +84,7 @@ export class View {
         this.context.font = '3.0rem "Arial"';
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
-        this.context.fillText('Press SPACE or ESC to resume', this.width / 2, this.height / 2);
+        this.context.fillText('Press SPACE or ESC to Resume', this.width / 2, this.height / 2);
     }
 
     renderEndScreen(currentState) {
@@ -98,7 +98,7 @@ export class View {
         this.context.textBaseline = 'middle';
         this.context.fillText('GAME OVER', this.width / 2, this.height / 2 - 50);
         this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
-        this.context.fillText('Press SPACE or ESC to retry', this.width / 2, this.height / 2 + 100);
+        this.context.fillText('Press SPACE or ESC to Retry', this.width / 2, this.height / 2 + 100);
 
     }
 

@@ -21,6 +21,10 @@ export class Controller {
 
         document.addEventListener('keydown', (event) => this.handleKeyDown(event));
 
+
+        // //   при зажатой клавише вниз таймер сдвига вниз всё равно срабатывает - получаем лишний(??) сдвиг вниз -  разве это баг? . чисто попробовать как играется с отключением таймера
+        // document.addEventListener('keyup', (event) => this.handleKeyUp(event));
+
         this.view.renderStartScreen();
 
     }
@@ -36,18 +40,20 @@ export class Controller {
             console.log('currentState.isGameOver', currentState.isGameOver);
 
             // this.stopTimer();
-            this.isPaused = true;
+            // this.isPaused = true;
             this.pause();
             this.view.renderEndScreen(currentState)
         }
     }
 
     pause() {
+        this.isPaused = true;
         this.view.renderPauseScreen();
         this.stopTimer();
     }
 
     play() {
+        this.isPaused = false;
         this.view.clearScreen();
         this.view.renderMainScreen(this.game.getState());
         this.startTimer();
@@ -80,30 +86,25 @@ export class Controller {
 
     handleKeyDown(event) {
         // console.log(event.code);
+
         switch (event.code) {
-            case 'Space': //  Space
-            case 'Escape': //  Escape
-
-                if (this.isPaused) {
-                    if (this.game.getState().isGameOver) {
-                        this.resetGame();
-                    }
-
-                    this.play();
-
-                    // this.view.clearScreen();
-                    // this.view.renderMainScreen(this.game.getState());
-                } else {
-                    this.pause();
-
-                    // this.view.renderPauseScreen();
+            case 'Space':
+            case 'Escape':
+                if (this.game.isGameOver) {
+                    this.resetGame();
                 }
 
-                this.isPaused = !this.isPaused;
+                if (this.isPaused) {
+                    this.play();
+                } else {
+                    this.pause();
+                }
+
+                // this.isPaused = !this.isPaused; - лучше вынести в методы
                 break;
         }
 
-        switch (this.isPaused || this.game.topOut || event.code) { //  || вместо if-ов
+        switch (this.isPaused || this.game.isGameOver || event.code) { //  || вместо if-ов
             case 'ArrowLeft': // Left Arrow
             case 'KeyL': // L
             case 'KeyA': // A
@@ -111,24 +112,25 @@ export class Controller {
                 this.view.renderMainScreen(this.game.getState()); // вызываем после движения
                 break;
 
-            case 'ArrowRight': // RightArrow
+            case 'ArrowRight':
             case 'KeyD': // D
-            case 'Quote': // Quote '
+            case 'Quote': // '
                 this.game.movePieceRight();
                 this.view.renderMainScreen(this.game.getState());
 
                 break;
 
-            case 'ArrowDown': //  Arrow Down
+            case 'ArrowDown':
             case 'KeyS': //  S
-            case 'Semicolon': // Semicolon ;
+            case 'Semicolon': // ;
+                // this.stopTimer();  //  для использования с handleKeyUp(event)
                 this.game.movePieceDown();
                 this.view.renderMainScreen(this.game.getState());
 
                 break;
 
-            case 'Enter': // Enter 
-            case 'ArrowUp': // ArrowUp
+            case 'Enter':
+            case 'ArrowUp':
             case 'KeyW': // W
                 this.game.rotatePiece();
                 this.view.renderMainScreen(this.game.getState());
@@ -138,13 +140,20 @@ export class Controller {
             // case '': // 
 
             //     break;
-
-            default:
-                break;
         }
 
-        // view.render(game.getState());
-
     }
+
+
+    // handleKeyUp(event) {
+    //     switch (this.isPaused || this.game.topOut || event.code) {
+    //         case 'ArrowDown': //  Arrow Down
+    //         case 'KeyS': //  S
+    //         case 'Semicolon': // Semicolon ;
+    //             this.startTimer();
+
+    //             break;
+    //     }
+    // }
 
 }
