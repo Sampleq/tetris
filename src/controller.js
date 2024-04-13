@@ -13,9 +13,18 @@ export class Controller {
         this.btnDown = this.btns.querySelector('.btn_down');
         this.btnRotate = this.btns.querySelector('.btn_rotate');
         this.btnPause = this.btns.querySelector('.btn_pause');
-        this.intervalBtn = null;
-        this.timeoutBtn = null;
 
+        this.intervalBtnL = null;
+        this.timeoutBtnL = null;
+
+        this.intervalBtnR = null;
+        this.timeoutBtnR = null;
+
+        this.intervalBtnD = null;
+        this.timeoutBtnD = null;
+
+        this.intervalBtnRt = null;
+        this.timeoutBtnRt = null;
 
         this.intervalId = null;
 
@@ -77,8 +86,14 @@ export class Controller {
 
     pause() {
         // обязательно очищаем  интервалы эмулирующие зажатие нарисованых кнопок
-        clearTimeout(this.timeoutBtn);
-        clearInterval(this.intervalBtn);
+        clearTimeout(this.timeoutBtnL);
+        clearInterval(this.intervalBtnL);
+        clearTimeout(this.timeoutBtnR);
+        clearInterval(this.intervalBtnR);
+        clearTimeout(this.timeoutBtnD);
+        clearInterval(this.intervalBtnD);
+        clearTimeout(this.timeoutBtnRt);
+        clearInterval(this.intervalBtnRt);
 
         this.isPaused = true;
         this.view.renderPauseScreen();
@@ -220,8 +235,9 @@ export class Controller {
                 this.game.movePieceLeft();
                 this.view.renderMainScreen(this.game.getState()); // вызываем после движения
 
-                this.timeoutBtn = setTimeout(() => {
-                    this.intervalBtn = setInterval(() => {
+                this.timeoutBtnL = setTimeout(() => {
+                    this.intervalBtnL = setInterval(() => {
+                        console.log('intervalBtnL')
                         this.game.movePieceLeft();
                         this.view.renderMainScreen(this.game.getState());
                     }, intervalBtnDelay);
@@ -235,8 +251,8 @@ export class Controller {
                 this.game.movePieceRight();
                 this.view.renderMainScreen(this.game.getState());
 
-                this.timeoutBtn = setTimeout(() => {
-                    this.intervalBtn = setInterval(() => {
+                this.timeoutBtnR = setTimeout(() => {
+                    this.intervalBtnR = setInterval(() => {
                         this.game.movePieceRight();
                         this.view.renderMainScreen(this.game.getState());
                     }, intervalBtnDelay);
@@ -250,8 +266,9 @@ export class Controller {
                 this.game.movePieceDown();
                 this.view.renderMainScreen(this.game.getState());
 
-                this.timeoutBtn = setTimeout(() => {
-                    this.intervalBtn = setInterval(() => {
+                this.timeoutBtnD = setTimeout(() => {
+                    this.intervalBtnD = setInterval(() => {
+                        console.log('intervalBtnD')
                         this.game.movePieceDown();
                         this.view.renderMainScreen(this.game.getState());
                     }, intervalBtnDelay);
@@ -264,11 +281,12 @@ export class Controller {
                 this.game.rotatePiece();
                 this.view.renderMainScreen(this.game.getState());
 
-                this.timeoutBtn = setTimeout(() => {
-                    this.intervalBtn = setInterval(() => {
+                this.timeoutBtnRt = setTimeout(() => {
+                    this.intervalBtnRt = setInterval(() => {
+                        console.log('intervalBtnRt')
                         this.game.rotatePiece();
                         this.view.renderMainScreen(this.game.getState());
-                    }, intervalBtnDelay * 2);
+                    }, intervalBtnDelay * 2.5);
                 }, timeoutBtnDelay);
 
                 break;
@@ -283,8 +301,14 @@ export class Controller {
             case this.btnDown:
             case this.btnRotate:
 
-                clearTimeout(this.timeoutBtn);
-                clearInterval(this.intervalBtn);
+                clearTimeout(this.timeoutBtnL);
+                clearInterval(this.intervalBtnL);
+                clearTimeout(this.timeoutBtnR);
+                clearInterval(this.intervalBtnR);
+                clearTimeout(this.timeoutBtnD);
+                clearInterval(this.intervalBtnD);
+                clearTimeout(this.timeoutBtnRt);
+                clearInterval(this.intervalBtnRt);
                 break;
         }
     }
