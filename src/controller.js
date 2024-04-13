@@ -7,7 +7,14 @@ export class Controller {
         this.view = view;
         this.isPaused = true;
 
-        // можно переписать чтобы при паузе setInterval очищался при помощи clearInterval
+        this.btns = document.querySelector('.btns');
+        this.btnLeft = this.btns.querySelector('.btn_left');
+        this.btnRight = this.btns.querySelector('.btn_right');
+        this.btnDown = this.btns.querySelector('.btn_down');
+        this.btnRotate = this.btns.querySelector('.btn_rotate');
+        this.btnPause = this.btns.querySelector('.btn_pause');
+
+
         this.intervalId = null;
 
         // setInterval(() => {
@@ -21,9 +28,11 @@ export class Controller {
 
         document.addEventListener('keydown', (event) => this.handleKeyDown(event));
 
-
         // //   при зажатой клавише вниз таймер сдвига вниз всё равно срабатывает - получаем лишний(??) сдвиг вниз -  разве это баг? . чисто попробовать как играется с отключением таймера
         // document.addEventListener('keyup', (event) => this.handleKeyUp(event));
+
+        //  листнер для виртуальных кнопок
+        this.btns.addEventListener('click', (event) => this.handleBtns(event));
 
         this.view.renderStartScreen();
 
@@ -144,6 +153,55 @@ export class Controller {
 
     }
 
+    handleBtns(event) {
+        console.log(event.target);
+        switch (event.target) {
+
+            case this.btnPause:
+
+                if (this.game.isGameOver) {
+                    this.resetGame();
+                }
+
+                if (this.isPaused) {
+                    this.play();
+                } else {
+                    this.pause();
+                }
+
+                // this.isPaused = !this.isPaused; - лучше вынести в методы
+                break;
+        }
+
+        switch (this.isPaused || this.game.isGameOver || event.target) { //  || вместо if-ов
+
+            case this.btnLeft:
+
+                this.game.movePieceLeft();
+                this.view.renderMainScreen(this.game.getState()); // вызываем после движения
+                break;
+
+            case this.btnRight:
+
+                this.game.movePieceRight();
+                this.view.renderMainScreen(this.game.getState());
+
+                break;
+
+            case this.btnDown:
+                // this.stopTimer();  //  для использования с handleKeyUp(event)
+                this.game.movePieceDown();
+                this.view.renderMainScreen(this.game.getState());
+
+                break;
+
+            case this.btnRotate:
+                this.game.rotatePiece();
+                this.view.renderMainScreen(this.game.getState());
+
+                break;
+        }
+    }
 
     // handleKeyUp(event) {
     //     switch (this.isPaused || this.game.topOut || event.code) {
@@ -155,5 +213,6 @@ export class Controller {
     //             break;
     //     }
     // }
+
 
 }

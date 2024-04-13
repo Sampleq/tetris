@@ -10,12 +10,51 @@ html {
 
 body {
     background-color: black;
-    transform: scale(0.875);
     overflow: hidden;
 }
 
+.wrapper {
+    width: 100%;
+    max-width: 120rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    row-gap: 2rem;
+
+    transform: scale(0.5) translate(0, -45%);
+}
+
+@media (min-width: 375px) {
+    .wrapper {
+        transform: scale(0.625) translate(0, -20%);
+    }
+}
+
+@media (min-width: 425px) {
+    .wrapper {
+        transform: scale(0.875);
+    }
+}
+
+@media (min-width: 768px) {
+    .wrapper {
+        row-gap: 5rem;
+        transform: scale(0.875);
+    }
+}
+
+@media (min-width: 900px) {
+    .wrapper {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0%;
+    }
+}
+
 @media (min-width: 1440px) {
-    body {
+    .wrapper {
         transform: scale(1);
     }
 
@@ -26,14 +65,13 @@ body {
 }
 
 #root {
-    padding: 0rem 3rem;
     text-align: center;
 }
 
 #root canvas {
     display: block;
     margin: 0 auto;
-    /* background-color: whitesmoke; */
+    background-color: rgb(20, 5, 30);
 }
 
 h1 {
@@ -64,4 +102,61 @@ h1 span:nth-child(5) {
 
 h1 span:nth-child(6) {
     color: purple
+}
+
+.btns {
+    position: relative;
+    width: 40rem;
+    height: 20rem;
+    border: 1px solid green;
+}
+
+.btn {
+    position: absolute;
+    background-color: gold;
+    border-radius: 50%;
+    width: 5rem;
+    /* width: 12.5%; */
+    height: 5rem;
+    /* height: 25%; */
+    transition: 0.1s;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: goldenrod;
+}
+
+.btn_left,
+.btn_right,
+.btn_rotate {
+    top: 30%
+}
+
+.btn_left {
+    left: 10%;
+}
+
+.btn_right {
+    left: 35%;
+}
+
+.btn_down {
+    top: 65%;
+    left: 22.5%;
+}
+
+.btn_rotate {
+    width: 7rem;
+    height: 7rem;
+    top: 25%;
+    right: 10%;
+}
+
+.btn_pause {
+    width: 3rem;
+    width: 3rem;
+    height: 3rem;
+    top: 5%;
+    right: 35%;
 }
