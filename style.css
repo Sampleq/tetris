@@ -157,7 +157,7 @@ h1 span:nth-child(6) {
     }
 }
 
-.btn_hover {
+.btns .btn_hover {
     background-color: goldenrod;
 }
 
