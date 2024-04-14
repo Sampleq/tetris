@@ -1,7 +1,8 @@
 // rotation - rotatePiece() - calculated, using temporary array
 
 // import { Controller } from "./controller.js";
-import { colorsNumber } from "./view.js"; // число цветов для рандомной перекраски
+import { View } from "./view.js";
+const colorsNumber = View.colorsNumber; // число цветов для рандомной перекраски
 
 export class Game {
     static points = {
@@ -23,32 +24,39 @@ export class Game {
         return this.topOut;
     }
 
+
+    linesToClearIndexes = [];
+
     // // !! -remade with new Array(20), fill() etc. 
     // объект игрового поля - двухмерный массив
-    playfield = this.createPlayField();
+    // playfield = this.createPlayField();
 
-    // playfield =     [
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    // ];
+    playfield = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+
+        // [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        // [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        // [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
 
 
 
@@ -109,6 +117,7 @@ export class Game {
             nextPiece: this.nextPiece,
             playfield,
             isGameOver: this.topOut,
+            linesToClearIndexes: this.linesToClearIndexes,
         }
 
     }
@@ -129,7 +138,10 @@ export class Game {
     }
 
     createPiece() {
-        const pieces = 'IJLOSTZ.IJLOSTZIJLOSTZ'; // задаём типы фигур
+        // задаём типы фигур
+        // const pieces = 'IJLOSTZ';  // классические фигуры
+        // const pieces = 'IJLOSTZ.IJLOSTZIJLOSTZ'; // с точкой
+        const pieces = 'I';
 
         // получаем случайное число от 0 до 6 - т.к. в тетрисе 7 фигур 
         const index = Math.floor(Math.random() * pieces.length); // - с одинаковой вероятностью
@@ -278,7 +290,7 @@ export class Game {
             this.activePiece.y--;
             this.lockPiece();
 
-            // после того как зафиксировали фигуру проверяем на возможность очистки линий и взависимости от кол-ва линий - обновляем счёт
+            // после того как зафиксировали фигуру проверяем на возможность очистки линий и взависимости от кол-ва линий и за одно обновляем счёт
             // this.updateScore(this.clearLines());
 
             const clearLines = this.clearLines();
@@ -402,13 +414,21 @@ export class Game {
             }
         }
 
+        this.linesToClearIndexes = lines;
+
         // перебираем массив с индексами полностью заполненных линий (сохранены в обратном порядке 0-й - самая верхняя линия) и удаляем из игрового поля линию (ряд) с соответствующим индексом, а сверху - т.е. в начало игрового поля - б=добавляем пустую линию (из нулей)
         for (const index of lines) {
             // добавить эффект заполненной линии перед удалением - например перемигивание разными цветами
 
-            this.playfield.splice(index, 1);
-            this.playfield.unshift((new Array(columns)).fill(0));
+            console.log('now start clean lines');
+
+            setTimeout(() => {
+                this.playfield.splice(index, 1);
+                this.playfield.unshift((new Array(columns)).fill(0));
+            }, 1000);
         }
+
+        setTimeout(() => this.linesToClearIndexes = [], 1010);
 
         return lines.length;
 
@@ -421,7 +441,7 @@ export class Game {
             // !! Добавить увеличенное кол-во очков за удаление линии с фигурой nugget - разноцветной
             this.score += Math.round(Game.points[clearedLines] * (1 + this.level / 10)); // Math.round - из-за работы с дробными значениями
 
-            this.lines += clearedLines; // увеличиваем счётс=чик линий
+            this.lines += clearedLines; // увеличиваем счётчик линий
             // this.level = Math.floor(this.lines / 10); вынес в класс как свойство-геттер
 
             // console.log(this.score, this.lines, this.level)

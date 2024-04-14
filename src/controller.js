@@ -45,6 +45,8 @@ export class Controller {
         //  листнеры для виртуальных кнопок
         this.btns.addEventListener('click', (event) => this.handleBtns(event));
 
+
+        // добавить условие matchMedia 
         this.btns.addEventListener('touchstart', (event) => this.hoverBtns(event));
         this.btns.addEventListener('touchend', (event) => this.unhoverBtns(event));
 
@@ -70,7 +72,14 @@ export class Controller {
 
 
     update() {
-        this.game.movePieceDown();
+        if (this.game.linesToClearIndexes.length) {
+            // setTimeout(() => this.game.movePieceDown(), 1000);
+        } else {
+            this.game.movePieceDown();
+        }
+
+
+
         const currentState = this.game.getState();
         this.view.renderMainScreen(currentState);
 
@@ -108,7 +117,7 @@ export class Controller {
     }
 
     startTimer() {
-        const speed = 1000 - this.game.getState().level * 75
+        const speed = 1000 - this.game.getState().level * 100
 
 
         this.intervalId = setInterval(() => {

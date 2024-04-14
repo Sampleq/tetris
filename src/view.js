@@ -10,6 +10,8 @@ export class View {
         7: 'red',
     }
 
+    static colorsNumber = Object.keys(View.colors).length;
+
     /**
      * 
      * @param {*} element - DOM элемент, куда будет помещено представление (визуализация)
@@ -110,8 +112,7 @@ export class View {
     // Логика метода: перебираем массив и на каждый непустой элемент что-то отрисовываем
     renderPlayField(currentState) {
 
-        const { playfield } = currentState;
-
+        const { playfield, linesToClearIndexes } = currentState;
 
         for (let y = 0; y < playfield.length; y++) {
             const line = playfield[y];
@@ -137,6 +138,33 @@ export class View {
 
             }
         }
+
+
+        // рендерим заполненные линии перед удалением
+
+        const int = setInterval(() => {
+            for (let y = linesToClearIndexes[0]; y <= linesToClearIndexes.at(-1); y++) {
+                const lineToClear = playfield[y];
+
+                for (let x = 0; x < lineToClear.length; x++) {
+                    const block = lineToClear[x];
+
+                    this.renderBlock(
+                        block,
+                        // (x * this.blockWidth),
+                        // (y * this.blockHeight),
+                        this.playfieldX + (x * this.blockWidth),
+                        this.playfieldY + (y * this.blockHeight),
+                        this.blockWidth,
+                        this.blockHeight,
+                        View.colors[(Math.floor(Math.random() * View.colorsNumber))],
+                        // 'red', // фиксированный цвет
+                    )
+                }
+            }
+        }, 100);
+        setTimeout(() => clearInterval(int), 1000);
+
 
         // задаём свойства границы игрового поля
         this.context.strokeStyle = 'whitesmoke';
@@ -212,5 +240,6 @@ export class View {
 
 }
 
-export const colorsNumber = Object.keys(View.colors).length;
+
+// export const colorsNumber = Object.keys(View.colors).length; // вместо отдельного импрота colorsNumber - импортируем весь класс View в game.js и используем статичиское свойство      View.colorsNumber
 
