@@ -132,6 +132,7 @@ h1 span:nth-child(6) {
 .btn {
     position: absolute;
     background-color: gold;
+    background: radial-gradient(circle at 75% -10%, gold 15px, #FF8008);
     border-radius: 50%;
     border: 0.1rem solid darkorange;
     /* width: 8rem; */
@@ -148,11 +149,15 @@ h1 span:nth-child(6) {
     .btn:hover {
         cursor: pointer;
         background-color: goldenrod;
+        background: radial-gradient(circle at 75% -10%, hsl(51, 100%, 45%) 15px, hsl(29, 100%, 35%));
+        /* filter: brightness(0.9); */
     }
 }
 
 .btns .btn_hover {
     background-color: goldenrod;
+    background: radial-gradient(circle at 75% -10%, hsl(51, 100%, 45%) 15px, hsl(29, 100%, 35%));
+    /* filter: brightness(0.9); */
 }
 
 .btn::after {
