@@ -5,6 +5,7 @@ import { Controller } from "./src/controller.js";
 
 // элемент для отправки аргументом в Класс View
 const root = document.querySelector('#root');
+const btns = document.querySelector('.btns');
 
 const game = new Game();
 
@@ -17,7 +18,7 @@ const columns = 10
 const view = new View(root, width, height, rows, columns);
 
 
-const controller = new Controller(game, view);
+const controller = new Controller(game, view, btns);
 
 // //  Для разработки и тестирования
 // view.renderPlayField(game.getState()); //передаём аргументом метод, возвращающий актуальное состояние игрового поля

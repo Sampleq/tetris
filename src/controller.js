@@ -2,12 +2,12 @@
 export class Controller {
 
     // для возможности управления  - получаем доступ к объектам игры и представления
-    constructor(game, view) {
+    constructor(game, view, btns) {
         this.game = game;
         this.view = view;
         this.isPaused = true;
 
-        this.btns = document.querySelector('.btns');
+        this.btns = btns;
         this.btnLeft = this.btns.querySelector('.btn_left');
         this.btnRight = this.btns.querySelector('.btn_right');
         this.btnDown = this.btns.querySelector('.btn_down');
