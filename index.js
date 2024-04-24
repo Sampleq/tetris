@@ -3,11 +3,10 @@ import { Game } from "./src/game.js";
 import { View } from "./src/view.js";
 import { Controller } from "./src/controller.js";
 
-// элемент для отправки аргументом в Класс View
+// элемент для отправки аргументом в Классы View и Controller
 const root = document.querySelector('#root');
 const btns = document.querySelector('.btns');
 
-const game = new Game();
 
 // // размеры и параметры игрового поля
 const width = 480 // 480  420
@@ -15,6 +14,7 @@ const height = 640 // 640  560
 const rows = 20
 const columns = 10
 
+const game = new Game(columns, rows);
 const view = new View(root, width, height, rows, columns);
 
 

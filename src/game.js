@@ -4,6 +4,36 @@
 import { colorsNumber } from "./view.js"; // число цветов для рандомной перекраски
 
 export class Game {
+    constructor(playfieldWidth, playfieldHeight) {
+        this.playfieldWidth = playfieldWidth;
+        this.playfieldHeight = playfieldHeight;
+
+        this.playfield = this.createPlayfield(this.playfieldWidth, this.playfieldHeight);
+        // объект игрового поля - двухмерный массив
+        // playfield =     [
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        // ];
+    }
+
     static points = {
         1: 100,
         2: 300,
@@ -23,49 +53,7 @@ export class Game {
         return this.topOut;
     }
 
-    // // !! -remade with new Array(20), fill() etc. 
-    // объект игрового поля - двухмерный массив
-    playfield = this.createPlayField();
-
-    // playfield =     [
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    // ];
-
-
-
     // объект активной фигуры (которая передвигается по полю) - её тоже будет представлять двухмерный массив. 
-
-    // (Для примера опишем Т образную фигуру. 3 - й ряд нужен чтобы её можно было повернуть.)
-
-    // activePieceX = 0;
-    // activePieceY = 0;
-    // activePiece = [
-    //     [0, 1, 0],
-    //     [1, 1, 1],
-    //     [0, 0, 0],
-
-    // ];
-
-    // пока вручную присвоили значение фигуры Т
 
     activePiece = this.createPiece();
 
@@ -79,9 +67,10 @@ export class Game {
         const { x: pieceX, y: pieceY, blocks } = this.activePiece;
 
         // // получаем копию игрового поля - можно заменить глубоким копированием массива this.playfield ([...arr], recursy)
-        const playfield = this.createPlayField();
+        const playfield = this.createPlayfield(this.playfieldWidth, this.playfieldHeight);
 
         // можно заменить методами массивов
+
         for (let y = 0; y < playfield.length; y++) {
             for (let x = 0; x < playfield[y].length; x++) {
 
@@ -89,6 +78,8 @@ export class Game {
 
             }
         }
+
+
 
         // // копируем "текущий" массив значения активной фигуры
         for (let y = 0; y < blocks.length; y++) {
@@ -113,19 +104,12 @@ export class Game {
 
     }
 
-    createPlayField() {
-        // эту генерацию можно заменить new Array(), fill(0 )
-        const playfield = [];
+    createPlayfield(width = 10, height = 20) {
+        return new Array(height).fill('').map(line => new Array(width).fill(0));
 
-        for (let y = 0; y < 20; y++) {  // временно указываем 20, а не берём из переменной
-            playfield[y] = [];
-            for (let x = 0; x < 10; x++) { // временно указываем 10, а не берём из переменной
-                playfield[y][x] = 0;
-            }
-        }
-
-        return playfield;
-
+        // const line = new Array(10).fill(0);
+        // const playfield = Array.from(new Array(20), () => Array.from(line))
+        // return playfield;
     }
 
     createPiece() {
@@ -374,8 +358,8 @@ export class Game {
     }
 
     clearLines() {
-        const rows = 20; // отрефакторить - убрать магические числа
-        const columns = 10;
+        const rows = this.playfieldHeight;
+        const columns = this.playfieldWidth;
 
         const lines = [];
 

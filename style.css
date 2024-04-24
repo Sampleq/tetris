@@ -61,6 +61,10 @@ body {
         align-items: center;
         gap: 1rem;
     }
+
+    body {
+        overflow: hidden;
+    }
 }
 
 @media (min-width: 1024px) {

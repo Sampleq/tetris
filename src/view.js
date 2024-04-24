@@ -64,7 +64,7 @@ export class View {
 
 
     renderMainScreen(currentState) {
-        this.renderPlayField(currentState);
+        this.renderPlayfield(currentState);
         this.renderPanel(currentState);
     }
 
@@ -108,7 +108,7 @@ export class View {
 
     //  метод который будет рисовать игровое поле. В качестве аргумента принимает двухмерный массив (playfield), на основе которого будет строить представление (т.е. наше игровое поле).
     // Логика метода: перебираем массив и на каждый непустой элемент что-то отрисовываем
-    renderPlayField(currentState) {
+    renderPlayfield(currentState) {
 
         const { playfield } = currentState;
 
@@ -200,8 +200,8 @@ export class View {
         }
     }
 
-    /* можно разбить renderPlayField() на 
-     общий метод render(), вызвывающий при if - renderPlayField() и при else - clearScreen()
+    /* можно разбить renderPlayfield() на 
+     общий метод render(), вызвывающий при if - renderPlayfield() и при else - clearScreen()
     но т.к. мой метод renderBlock очищает только пустые ячейки за один проход цикла - отдельный метод clearScreen(), предварительно очищающий всё игровое поле - не нужен. 
     */
 

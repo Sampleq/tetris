@@ -124,7 +124,10 @@ export class Controller {
     }
 
     resetGame() {
-        this.game.playfield = this.game.createPlayField();
+        this.game.playfield =
+            this.game.createPlayfield(
+                this.game.playfieldWidth, this.game.playfieldHeight
+            );
         this.game.topOut = false;
         this.game.score = 0;
         this.game.lines = 0;
@@ -178,6 +181,8 @@ export class Controller {
                 break;
 
             case 'Enter':
+            case 'ShiftRight':
+            case 'ShiftLeft':
             case 'ArrowUp':
             case 'KeyW': // W
                 this.game.rotatePiece();
