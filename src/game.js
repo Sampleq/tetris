@@ -8,6 +8,8 @@ export class Game {
         this.playfieldWidth = playfieldWidth;
         this.playfieldHeight = playfieldHeight;
 
+        // если  задавать свойство как свойство Класса - не будет доступа к значению аргументов, передаваемых в конструктор при создании экземпляра класса. - Т.к. сначала расчитывается значение свойства класса (аргументов ещё нет!) - а затем это свойство присвоится объекту который создал конструктор ( а именно конструктор и работает с аргументами)
+
         this.playfield = this.createPlayfield(this.playfieldWidth, this.playfieldHeight);
         // объект игрового поля - двухмерный массив
         // playfield =     [
@@ -32,6 +34,10 @@ export class Game {
         //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         // ];
+
+        // объект активной фигуры (которая передвигается по полю) и следующей - их тоже будет представлять двухмерный массив. 
+        this.activePiece = this.createPiece();
+        this.nextPiece = this.createPiece();
     }
 
     static points = {
@@ -53,11 +59,7 @@ export class Game {
         return this.topOut;
     }
 
-    // объект активной фигуры (которая передвигается по полю) - её тоже будет представлять двухмерный массив. 
 
-    activePiece = this.createPiece();
-
-    nextPiece = this.createPiece();
 
 
     // метод, возвращающий состояние игрового поля - по сути мы будем фиксировать фигуру на другом массиве - дубликате - который мы будем возвращать для отображения  - использовать аргументом .renderPlayField() из Класса View
@@ -69,29 +71,21 @@ export class Game {
         // // получаем копию игрового поля - можно заменить глубоким копированием массива this.playfield ([...arr], recursy)
         const playfield = this.createPlayfield(this.playfieldWidth, this.playfieldHeight);
 
-        // можно заменить методами массивов
-
-        for (let y = 0; y < playfield.length; y++) {
-            for (let x = 0; x < playfield[y].length; x++) {
-
+        playfield.forEach((line, y) => {
+            line.forEach((block, x) => {
                 playfield[y][x] = this.playfield[y][x];
-
-            }
-        }
-
+            })
+        });
 
 
         // // копируем "текущий" массив значения активной фигуры
-        for (let y = 0; y < blocks.length; y++) {
-            for (let x = 0; x < blocks[y].length; x++) {
-
+        blocks.forEach((line, y) => {
+            line.forEach((block, x) => {
                 if (blocks[y][x]) {
-                    playfield[pieceY + y][pieceX + x] =
-                        blocks[y][x];
+                    playfield[pieceY + y][pieceX + x] = blocks[y][x];
                 }
-
-            }
-        }
+            });
+        });
 
         return {
             score: this.score,
@@ -105,7 +99,9 @@ export class Game {
     }
 
     createPlayfield(width = 10, height = 20) {
-        return new Array(height).fill('').map(line => new Array(width).fill(0));
+        return new Array(height)
+            .fill(null)
+            .map(line => new Array(width).fill(0));
 
         // const line = new Array(10).fill(0);
         // const playfield = Array.from(new Array(20), () => Array.from(line))
@@ -198,9 +194,7 @@ export class Game {
         }
 
         // задаём координаты появления фигуры, после того как мы уже знаем какая фигура появится
-
-        // 10 - ширина игрового поля - ОТРЕФАКТОРИТЬ - брать из переменной/свойства
-        piece.x = Math.floor((10 - piece.blocks[0].length) / 2);
+        piece.x = Math.floor((this.playfieldWidth - piece.blocks[0].length) / 2);
         piece.y = -1; //  у всех фигур верхний ряд в bounding box - пустой
 
         // // раскрашиваем фигуры в случайный цвет. 1/20 - вероятность разноцветной фигуры
@@ -211,10 +205,10 @@ export class Game {
             piece.blocks = this.repaintPiece(piece.blocks, colorsNumber);
         }
 
-
         return piece;
     }
 
+    // если не передать colorIndex - раскрашивает в случайный цвет
     repaintPiece(block_2d, colorsNumber = 7, colorIndex) {
         return block_2d = block_2d.reduce((pieceBlock, rowPiece) => {
             rowPiece = rowPiece.map(el => {
@@ -231,7 +225,6 @@ export class Game {
             return pieceBlock;
         }, []);
     }
-
 
 
     // // методы перемещения активной фигуры
@@ -263,7 +256,6 @@ export class Game {
             this.lockPiece();
 
             // после того как зафиксировали фигуру проверяем на возможность очистки линий и взависимости от кол-ва линий - обновляем счёт
-            // this.updateScore(this.clearLines());
 
             const clearLines = this.clearLines();
             this.updateScore(clearLines);
