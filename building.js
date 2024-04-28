@@ -9,15 +9,16 @@ const btns = document.querySelector('.btns');
 
 
 // // размеры и параметры игрового поля
-const width = 480 // 480  420
-const height = 640 // 640  560
-const rows = 20
-const columns = 10
+const width = 320 * 4 + 70// 480 for 10 columns with panel; - 320 just for 10 columns
+const height = 680 // 640 for 20 rows
+const rows = 24
+const columns = 42
 const piecesClassic = 'IJLOSTZ'; // задаём типы фигур 
-const piecesWithDot = 'IJLOSTZ.IJLOSTZIJLOSTZ'; // задаём типы фигур 
+const piecesWithDot = 'IJLOSTZ.IJLOSTZIJLOSTZ'; // с редкой точкой
+const piecesPenta = 'IJLOSTZ.tszul'; // включая пента фигуры
 
 
-const game = new Game(columns, rows, piecesWithDot);
+const game = new Game(columns, rows, piecesPenta);
 const view = new View(root, width, height, rows, columns);
 
 

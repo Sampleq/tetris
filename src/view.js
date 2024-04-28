@@ -35,7 +35,8 @@ export class View {
         this.playfieldY = this.playfieldBoarderWidth;
 
         // ширина и высота игрового поля
-        this.playfieldWidth = this.width * 2 / 3;
+        // this.playfieldWidth = this.width * 2 / 3;
+        this.playfieldWidth = this.height * columns / rows;
         this.playfieldHeight = this.height;
 
         // внутренние ширина и высота игрового поля
@@ -53,8 +54,8 @@ export class View {
         this.panelX = this.playfieldWidth + this.gap; // 20px - отсуп между игровым полем и панелью
         // this.panelX = this.playfieldWidth;
         this.panelY = this.gap;
-        this.panelWidth = this.width * 1 / 3 - this.gap;
-        // this.panelWidth = this.width * 1 / 3;
+        // this.panelWidth = this.width * 1 / 3 - this.gap;
+        this.panelWidth = this.width - this.playfieldWidth - this.gap;
         this.panelHeight = this.height;
 
         // добавляем в элемент холст, который мы создали

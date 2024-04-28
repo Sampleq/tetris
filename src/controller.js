@@ -70,7 +70,7 @@ export class Controller {
 
 
     update() {
-        this.game.movePieceDown();
+        this.game.movePieceDown(this.game.pieces);
         const currentState = this.game.getState();
         this.view.renderMainScreen(currentState);
 
@@ -131,7 +131,7 @@ export class Controller {
         this.game.topOut = false;
         this.game.score = 0;
         this.game.lines = 0;
-        this.game.updatePieces();
+        this.game.updatePieces(this.game.pieces);
     }
 
 
@@ -175,7 +175,7 @@ export class Controller {
             case 'KeyS': //  S
             case 'Semicolon': // ;
                 // this.stopTimer();  //  для использования с handleKeyUp(event)
-                this.game.movePieceDown();
+                this.game.movePieceDown(this.game.pieces);
                 this.view.renderMainScreen(this.game.getState());
 
                 break;
@@ -268,13 +268,13 @@ export class Controller {
 
             case this.btnDown:
 
-                this.game.movePieceDown();
+                this.game.movePieceDown(this.game.pieces);
                 this.view.renderMainScreen(this.game.getState());
 
                 this.timeoutBtnD = setTimeout(() => {
                     this.intervalBtnD = setInterval(() => {
                         console.log('intervalBtnD')
-                        this.game.movePieceDown();
+                        this.game.movePieceDown(this.game.pieces);
                         this.view.renderMainScreen(this.game.getState());
                     }, intervalBtnDelay);
                 }, timeoutBtnDelay);

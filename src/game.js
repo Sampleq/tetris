@@ -4,7 +4,7 @@
 import { colorsNumber } from "./view.js"; // число цветов для рандомной перекраски
 
 export class Game {
-    constructor(playfieldWidth, playfieldHeight) {
+    constructor(playfieldWidth, playfieldHeight, pieces) {
         this.playfieldWidth = playfieldWidth;
         this.playfieldHeight = playfieldHeight;
 
@@ -35,9 +35,13 @@ export class Game {
         //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         // ];
 
+
+        // с какими фигурами будет игра
+        this.pieces = pieces;
+
         // объект активной фигуры (которая передвигается по полю) и следующей - их тоже будет представлять двухмерный массив. 
-        this.activePiece = this.createPiece();
-        this.nextPiece = this.createPiece();
+        this.activePiece = this.createPiece(this.pieces);
+        this.nextPiece = this.createPiece(this.pieces);
     }
 
     static points = {
@@ -108,8 +112,9 @@ export class Game {
         // return playfield;
     }
 
-    createPiece() {
-        const pieces = 'IJLOSTZ.IJLOSTZIJLOSTZ'; // задаём типы фигур
+    createPiece(pieces) {
+        // const pieces = 'IJLOSTZ.IJLOSTZIJLOSTZ'; // задаём типы фигур - вынес параметром
+        // console.log(pieces);
 
         // получаем случайное число от 0 до 6 - т.к. в тетрисе 7 фигур 
         const index = Math.floor(Math.random() * pieces.length); // - с одинаковой вероятностью
@@ -188,6 +193,56 @@ export class Game {
                 ];
                 break;
 
+            case 't':
+                piece.blocks = [
+                    [0, 0, 0, 0, 0], // верхний ряд должен быть пустым (мы так условились)
+                    [0, 1, 1, 1, 0],
+                    [0, 0, 1, 0, 0],
+                    [0, 0, 1, 0, 0],
+                    [0, 0, 0, 0, 0],
+                ];
+                break;
+
+            case 's':
+                piece.blocks = [
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 1, 1, 0],
+                    [0, 0, 1, 0, 0],
+                    [0, 1, 1, 0, 0],
+                    [0, 0, 0, 0, 0],
+                ];
+                break;
+
+            case 'z':
+                piece.blocks = [
+                    [0, 0, 0, 0, 0],
+                    [0, 1, 1, 0, 0],
+                    [0, 0, 1, 0, 0],
+                    [0, 0, 1, 1, 0],
+                    [0, 0, 0, 0, 0],
+                ];
+                break;
+
+            case 'u':
+                piece.blocks = [
+                    [0, 0, 0, 0, 0],
+                    [0, 1, 0, 1, 0],
+                    [0, 1, 0, 1, 0],
+                    [0, 1, 1, 1, 0],
+                    [0, 0, 0, 0, 0],
+                ];
+                break;
+
+            case 'l':
+                piece.blocks = [
+                    [0, 0, 0, 0, 0],
+                    [0, 1, 0, 0, 0],
+                    [0, 1, 0, 0, 0],
+                    [0, 1, 1, 1, 0],
+                    [0, 0, 0, 0, 0],
+                ];
+                break;
+
             default:
 
                 throw new Error('Unknown type of piece');
@@ -244,7 +299,7 @@ export class Game {
         }
     }
 
-    movePieceDown() {
+    movePieceDown(pieces) {
         if (this.topOut) {
             return;
         }
@@ -261,7 +316,7 @@ export class Game {
             this.updateScore(clearLines);
 
             // обновляем значения свойств activePiece и nextPiece
-            this.updatePieces();
+            this.updatePieces(pieces);
         }
 
         // после создания новых фигур ещё раз проверяем, нет ли столкновения - т.е. есть ли место куда падать или уже нет - т.е. игра окончена.
@@ -394,9 +449,9 @@ export class Game {
     }
 
 
-    updatePieces() {
+    updatePieces(pieces) {
         this.activePiece = this.nextPiece;
-        this.nextPiece = this.createPiece();
+        this.nextPiece = this.createPiece(pieces);
     }
 
 }
