@@ -266,7 +266,7 @@ h2 {
 @media (min-width: 1280px) {
 
     .wrapper__building {
-        transform: scale(0.875) translate(0, -5%);
+        /* transform: scale(0.875) translate(0%, -5%) !important; */
     }
 
     h2 {
@@ -278,7 +278,7 @@ h2 {
     h2 a {
         color: bisque;
         position: absolute;
-        top: 0;
+        top: 1rem;
         right: 0;
         text-decoration: none;
     }
@@ -293,8 +293,7 @@ h2 {
 
 @media (min-width: 1440px) {
     .wrapper__building {
-        transform: scale(1);
+        transform: scale(0.95) translate(5%, -3%);
         padding-top: 0;
     }
-
 }
